@@ -15,7 +15,6 @@ const Header = () => {
                     </a>
                     <div className={classes.userSection}>
                         <a href={"/pricelist"} className={classes.headerLink} variant="contained"
-                            color="black"
                         >
                             <Typography>PriceList</Typography>
                         </a>

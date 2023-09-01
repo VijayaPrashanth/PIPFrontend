@@ -9,12 +9,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import PriceList from "../priceList/PriceList";
 import Bill from "../bill/Bill";
+//import Header from "../header/Header";
 
 
-const RootRouter = ({ isAuthenticated, onLogin, username }) => {
+const RootRouter = () => {
+    
     return (
         <Router>
             <Routes>
+                <Route exact path="/"/>
                 <Route exact path="/pricelist" element={<PriceList/>}
                 />
                 <Route exact path="/bill" element={<Bill/>}/>
