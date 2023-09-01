@@ -5,7 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 
 import { Typography } from "@material-ui/core";
-import Header from "./header/Header";
+import Header from "./Header";
 
  configure({ adapter: new Adapter() });
 describe("Basic rendering", () => {

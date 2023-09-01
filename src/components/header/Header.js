@@ -8,12 +8,14 @@ const Header = () => {
         <>
             <AppBar className={classes.appbar} position={"sticky"}>
                 <Toolbar className={classes.toolbar}>
+                    <a href="/" className={classes.headerLink} variant="contained">
                     <Typography className={classes.headerLogo} variant="h5">
                         Daily Needs
                     </Typography>
+                    </a>
                     <div className={classes.userSection}>
                         <a href={"/pricelist"} className={classes.headerLink} variant="contained"
-                            color="primary"
+                            color="black"
                         >
                             <Typography>PriceList</Typography>
                         </a>
