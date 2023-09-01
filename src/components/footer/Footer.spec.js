@@ -18,7 +18,7 @@ describe("Basic rendering", () => {
     const typographyComponent = footerComponent.find(Typography);
     const version = typographyComponent.at(0);
     expect(typographyComponent.length).toBe(1);
-    expect(version.text()).toBe("Version :");
+    expect(version.text()).toBe("Version : v1");
   });
 
   

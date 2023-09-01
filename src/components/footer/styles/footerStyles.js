@@ -4,9 +4,8 @@ export default makeStyles((theme) => ({
     
   footer : {
 [theme.breakpoints.up('sm')]: {
-                marginTop:900,
-                marginBottom: 0,
-                position: "absolute",
+                marginTop:890,
+                position: "bottom",
                 bottom: 0,
             },
     position:'absolute',
