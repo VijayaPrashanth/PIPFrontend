@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
     
   footer : {
 [theme.breakpoints.up('sm')]: {
-                marginTop:890,
+                marginTop:920,
                 position: "bottom",
                 bottom: 0,
             },

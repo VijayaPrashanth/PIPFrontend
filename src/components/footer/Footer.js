@@ -7,12 +7,13 @@ const Footer = () => {
     const classes = styles();
     const [response,setResponse] = useState('');
 
-    axios.get("http://localhost:8080/version").then(response=>{setResponse(response.data.CurrentVersion)});    
+    axios.get("http://localhost:8080/version").then(response=>{setResponse(response.data.CurrentVersion)}); 
+    console.log(response);   
   return (
     <>
         <AppBar className={classes.footer} color="primary">
             <Toolbar>
-                <Typography variant="body2">
+                <Typography variant="h6">
                     Version : {response}
                 </Typography>
             </Toolbar>
