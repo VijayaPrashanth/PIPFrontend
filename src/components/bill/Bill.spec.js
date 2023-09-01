@@ -2,16 +2,16 @@ import React from "react";
 import { shallow } from "enzyme";
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Bill from "./bill/Bill"
+
 
 import { Typography } from "@material-ui/core";
-
+import Bill from "./Bill";
 
  configure({ adapter: new Adapter() });
 describe("Basic rendering", () => {
    
 
-  it("Should display pricelist text", () => {
+  it("Should display Bill Details text", () => {
     const billComponent = shallow(
       <Bill/>
     );
