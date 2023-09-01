@@ -3,8 +3,9 @@ import { shallow } from "enzyme";
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import Header from "./Header";
+
 import { Typography } from "@material-ui/core";
+import Header from "./header/Header";
 
  configure({ adapter: new Adapter() });
 describe("Basic rendering", () => {
@@ -15,8 +16,9 @@ describe("Basic rendering", () => {
       <Header/>
     );
     const typographyComponent = headerComponent.find(Typography);
-    expect(typographyComponent.length).toBe(1);
-    expect(typographyComponent.text()).toBe("Daily Needs");
+    const dailyNeeds = typographyComponent.at(0);
+    expect(typographyComponent.length).toBe(3);
+    expect(dailyNeeds.text()).toBe("Daily Needs");
   });
 
 
@@ -24,17 +26,14 @@ describe("Basic rendering", () => {
     const headerComponent = shallow(
       <Header/>
     );
+
     const typographyComponent = headerComponent.find(Typography);
-    expect(typographyComponent.length).toBe(1);
-    expect(typographyComponent.text()).toBe("Daily Needs");
+    const priceList = typographyComponent.at(1);
+    const bill = typographyComponent.at(2);
+    expect(typographyComponent.length).toBe(3);
+    expect(priceList.text()).toBe("PriceList");
+    expect(bill.text()).toBe("Bill");
   });
 
-  it("header", ()=> {
-    const headerComponent = shallow(
-      <Header/>
-    );
-    const typographyComponent = headerComponent.find(Typography);
-    expect(typographyComponent.length).toBe(1);
-    expect(typographyComponent.text()).toBe("Daily Needs");
-  });
+  
 });
