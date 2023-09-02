@@ -6,7 +6,7 @@ import { render, screen } from "@testing-library/react";
 
  configure({ adapter: new Adapter() });
  
-describe("Basic rendering", () => {
+describe("PriceList Basic rendering", () => {
    
 
   it("Should display pricelist text", () => {

@@ -6,7 +6,7 @@ import Bill from "./Bill";
 import { render, screen } from "@testing-library/react";
 
  configure({ adapter: new Adapter() });
-describe("Basic rendering", () => {
+describe("Bill Basic rendering", () => {
    
 
   it("Should have Bill id", () => {

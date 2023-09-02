@@ -7,7 +7,7 @@ import Header from "./Header";
 
  configure({ adapter: new Adapter() });
 
- describe("Basic rendering", () => {
+ describe("Header component Basic rendering", () => {
    
   it("Should display Daily Needs in header", () => {
    render(

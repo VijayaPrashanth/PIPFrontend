@@ -6,7 +6,7 @@ import { render, screen } from "@testing-library/react";
 
  configure({ adapter: new Adapter() });
 
-describe("Basic rendering", () => {
+describe("Footer Basic rendering", () => {
    
 
   it("Should display version", () => {
@@ -23,4 +23,20 @@ describe("Basic rendering", () => {
 
   })
 
+});
+
+
+
+describe("Footer Component", () => {
+  jest.mock("../helpers/apiService", () => ({
+  version: jest.fn(() =>
+    Promise.resolve({
+      data: { "CurrentVersion": "v1" }, // Mocked response data
+    })
+  ),
+}));
+  it("fetches and displays the version information", async () => {
+    render(<Footer />);
+    expect(screen.getByTestId("version")).toHaveTextContent("Version :");
+  });
 });

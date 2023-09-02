@@ -9,6 +9,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import PriceList from "../priceList/PriceList";
 import Bill from "../bill/Bill";
+import Error from "../common/Error";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import BlockIcon from "@material-ui/icons/Block";
+
 //import Header from "../header/Header";
 
 
@@ -21,6 +25,16 @@ const RootRouter = () => {
                 <Route exact path="/pricelist" element={<PriceList/>}
                 />
                 <Route exact path="/bill" element={<Bill/>}/>
+                <Route exact path="/error" 
+                element={<Error errorIcon={ErrorOutlineIcon} errorMessage={"Oops..Something went wrong"}
+                    />
+                  }
+                />
+
+                <Route element={
+                    <Error errorIcon={BlockIcon} errorMessage={"Not Found"} />
+                  }
+                />
             </Routes>
         </Router>
     );
