@@ -27,8 +27,8 @@ const RootRouter = () => {
 };
 
 RootRouter.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  onLogin: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+  onLogin: PropTypes.func,
 };
 
 export default RootRouter;

@@ -13,9 +13,11 @@ const Footer = () => {
     <>
         <AppBar className={classes.footer} color="primary">
             <Toolbar>
-                <Typography variant="h6">
+                  <div data-testid="version">
+                <Typography variant="h6" >
                     Version : {response}
                 </Typography>
+                </div>
             </Toolbar>
         </AppBar>
 

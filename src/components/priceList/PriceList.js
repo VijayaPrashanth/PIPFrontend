@@ -5,9 +5,11 @@ import { Typography } from "@material-ui/core";
 const PriceList=()=>{
     return(
         <>
-            <Typography variant="h5" color='black'>
-                PriceList
-            </Typography>
+            <div data-testId="pricelist">
+                <Typography variant="h5">
+                    PriceList
+                </Typography>
+            </div>
         </>
     );
 };

@@ -1,39 +1,45 @@
 import React from "react";
-import { shallow } from "enzyme";
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { render,screen } from "@testing-library/react";
 
-
-import { Typography } from "@material-ui/core";
 import Header from "./Header";
 
  configure({ adapter: new Adapter() });
-describe("Basic rendering", () => {
+
+ describe("Basic rendering", () => {
    
-
   it("Should display Daily Needs in header", () => {
-    const headerComponent = shallow(
+   render(
       <Header/>
     );
-    const typographyComponent = headerComponent.find(Typography);
-    const dailyNeeds = typographyComponent.at(0);
-    expect(typographyComponent.length).toBe(3);
-    expect(dailyNeeds.text()).toBe("Daily Needs");
+    const headerid = screen.getByTestId("dailyneeds");
+    expect(headerid).toBeTruthy();
+    const dailyneeds = screen.getByText("Daily Needs");
+    expect(dailyneeds).toBeTruthy();
   });
-
-
-  it("Should have pricelist bill in header", ()=> {
-    const headerComponent = shallow(
+ it("Should have pricelist in header", ()=> {
+    render(
       <Header/>
     );
 
-    const typographyComponent = headerComponent.find(Typography);
-    const priceList = typographyComponent.at(1);
-    const bill = typographyComponent.at(2);
-    expect(typographyComponent.length).toBe(3);
-    expect(priceList.text()).toBe("PriceList");
-    expect(bill.text()).toBe("Bill");
+    const pricelistid = screen.getByTestId("pricelist");
+    expect(pricelistid).toBeTruthy();
+
+    const priceText = screen.getByText("PriceList");
+    expect(priceText).toBeDefined();
   });
 
-  
+  it("Should have bill in header", () => {
+     render(
+      <Header />
+    );
+
+    const billId = screen.getByTestId("bill");
+    expect(billId).toBeTruthy();
+
+    const billText = screen.getByText("Bill");
+    expect(billText).toBeDefined();
+  });
+
 });

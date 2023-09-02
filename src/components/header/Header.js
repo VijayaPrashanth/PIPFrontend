@@ -1,32 +1,35 @@
 import React from "react";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Toolbar } from "@material-ui/core";
 import styles from "./styles/headerStyles";
 
 const Header = () => {
     const classes = styles();
-    return(
+    
+    return (
         <>
             <AppBar className={classes.appbar} position={"sticky"}>
                 <Toolbar className={classes.toolbar}>
-                    <a href="/" className={classes.headerLink} variant="contained">
-                    <Typography className={classes.headerLogo} variant="h5">
+                    <div data-testid="dailyneeds">
+                    <a href="/" className={classes.headerLink} variant="contained" >
                         Daily Needs
-                    </Typography>
                     </a>
-                    <div className={classes.userSection}>
-                        <a href={"/pricelist"} className={classes.headerLink} variant="contained"
-                        >
-                            <Typography>PriceList</Typography>
-                        </a>
-                        <a href={"/bill"} className={classes.headerLink} variant="contained"
-                            >
-                                <Typography>Bill</Typography>
-                        </a>
                     </div>
-                </Toolbar>  
+                    <div className={classes.userSection} >
+                        <div className={classes.userSection} data-testid="pricelist">
+                            <a href={"/pricelist"} className={classes.headerLink} variant="contained" onClick={(e) => e.preventDefault()}>
+                                PriceList
+                            </a>
+                        </div>
+                        <div className={classes.userSection} data-testid="bill">
+                            <a href={"/bill"} className={classes.headerLink} variant="contained" data-testid="link">
+                                Bill
+                            </a>
+                        </div>
+                    </div>
+                </Toolbar>
             </AppBar>
-            
-          </>
+
+        </>
     );
 }
 
