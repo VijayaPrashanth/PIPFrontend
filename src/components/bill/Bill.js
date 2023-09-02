@@ -3,8 +3,7 @@ import { Typography } from "@material-ui/core";
 
 const Bill = ()=>{
     return(
-
-        <Typography variant="h5" data-testId="bill">
+        <Typography variant="h5" data-testid="bill">
             Bill Details
         </Typography>
     );
