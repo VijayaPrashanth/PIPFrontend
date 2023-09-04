@@ -16,7 +16,7 @@ const Header = () => {
                     </div>
                     <div className={classes.userSection} >
                         <div className={classes.userSection} data-testid="pricelist">
-                            <a href={"/pricelist"} className={classes.headerLink} variant="contained" onClick={(e) => e.preventDefault()}>
+                            <a href={"/pricelist"} className={classes.headerLink} variant="contained">
                                 PriceList
                             </a>
                         </div>
