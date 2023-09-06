@@ -12,6 +12,7 @@ import Bill from "../bill/Bill";
 import Error from "../common/Error";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import BlockIcon from "@material-ui/icons/Block";
+import Cart from "../cart/Cart";
 
 //import Header from "../header/Header";
 
@@ -30,7 +31,7 @@ const RootRouter = () => {
                     />
                   }
                 />
-
+                <Route exact path="/cart" element={<Cart/>}/>
                 <Route element={
                     <Error errorIcon={BlockIcon} errorMessage={"Not Found"} />
                   }
