@@ -4,13 +4,14 @@ export default makeStyles((theme) => ({
     
   footer : {
 [theme.breakpoints.up('sm')]: {
-                marginTop:920,
+                marginTop:930,
                 position: "bottom",
                 bottom: 0,
             },
     position:'absolute',
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor:"grey"
+    backgroundColor:"white",
+    color:"black"
 }
 }));

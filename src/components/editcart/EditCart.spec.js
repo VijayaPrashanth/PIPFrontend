@@ -8,7 +8,7 @@ describe("dialog box for editing the cart item should be present",()=>{
         await expect(screen.getByTestId('dialogbox')).toBeTruthy();
     });
 
-    it("should have a gri for quantity", async () => {
+    it("should have a grid for quantity", async () => {
         render(<EditCart open={true} />);
         await expect(screen.getByTestId('quantity')).toBeTruthy();
     });

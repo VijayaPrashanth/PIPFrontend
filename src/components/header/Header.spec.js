@@ -43,3 +43,11 @@ import Header from "./Header";
   });
 
 });
+
+describe("should have shopping cart icon",()=>{
+  it("should have shoppingcarticon",()=>{
+    render(<Header/>);
+
+    expect(screen.getByTestId("cart")).toBeTruthy();
+  })
+});

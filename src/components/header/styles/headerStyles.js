@@ -20,13 +20,17 @@ export default makeStyles((theme) => ({
   userSection: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor:"grey"
+    justifyContent: "space-between"
   },
   appbar: {
     display: "flex",
     justifyContent: "space-between",
     backgroundColor: "black"
+  },
+  shoppingcarticon: {
+    alignSelf: "flex-end",
+    justifyContent: "flex-end",
+    color:"white"
   }
 
 }));

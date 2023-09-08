@@ -9,13 +9,14 @@ export default makeStyles((theme) => ({
 
     titleandcarticon:{
         display:"flex",
-        justifyContent:"space-around",
+        flexWrap:"wrap",
+        alignContent:"flex-end",
+        justifyContent:"space-evenly",
         padding:"40px"
     },
 
     shoppingcarticon:{
         alignSelf:"flex-end",
-        alignItems:"right",
         justifyContent:"flex-end"
     },
 
@@ -29,11 +30,13 @@ export default makeStyles((theme) => ({
     tableheader: {
         backgroundColor: "black"
     },
-    readbutton: {
-        backgroundColor: "skyblue"
+    thtext: {
+        color: "white",
+        alignContent: "center"
     },
     updatebutton: {
-        backgroundColor: "orange"
+        backgroundColor: "orange",
+        marginBottom:25
     },
     deletebutton: {
         backgroundColor: "red"
@@ -44,10 +47,17 @@ export default makeStyles((theme) => ({
         flexDirection:"row",
         alignItems:"center"
     },
-    cardContent:{
-        display:"flex",
-        justifyItems:"space-around ",
-        justifyContent:"space-evenly"
+    tablecell:{
+        alignSelf:"center",
+        alignItems:"center",
+        alignContent:"center",
+        justifyContent:"center",
+
+    },
+    noitems:{
+        justifyContent:"center",
+        alignItems:"center",
+        alignContent:"center"
     }
 
 }));
