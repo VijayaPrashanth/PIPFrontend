@@ -1,42 +1,26 @@
 import React from "react";
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import Footer from "./Footer";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import { when } from "jest-when";
+import footerService from "./services/footerService";
 
- configure({ adapter: new Adapter() });
-
-describe("Footer Basic rendering", () => {
-   
-
-  it("Should display version", () => {
-
-    render(<Footer/>);
-    
-    const versionid = screen.getByTestId("version");
-    expect(versionid).toBeTruthy();
-  });
-
-  it("should display version text",()=>{
-    render(<Footer/>);
-    expect(screen.getByText("Version :")).toBeInTheDocument();
-
-  })
-
-});
-
-
-
-describe("Footer Component", () => {
-  jest.mock("../helpers/apiService", () => ({
-  version: jest.fn(() =>
-    Promise.resolve({
-      data: { "CurrentVersion": "v1" }, // Mocked response data
-    })
+jest.mock("./services/footerService.js", () => ({
+  getVersion: jest.fn(() =>
+    Promise.resolve({ "CurrentVersion": "v1" }
+    )
   ),
 }));
-  it("fetches and displays the version information", async () => {
+describe("Footer Component Basic Rendering", () => {
+  
+  it("should return current version", async () => {
+
+    when(footerService.getVersion).calledWith().mockReturnValue({CurrentVersion: "v1"});
     render(<Footer />);
-    expect(screen.getByTestId("version")).toHaveTextContent("Version :");
+
+    await waitFor(()=>{
+      const version = screen.getByTestId("version");
+      expect(version.textContent).toBe("Version : v1");
+    })
   });
+
 });

@@ -1,34 +1,35 @@
-import React,{useEffect, useState} from "react";
-import {AppBar,Toolbar, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { AppBar, Card, Toolbar, Typography } from "@material-ui/core";
 import styles from './styles/footerStyles';
-import apiService from "../helpers/apiService";
+import footerService from "./services/footerService";
 
 const Footer = () => {
-    const classes = styles();
-    const [response,setResponse] = useState('');
+  const classes = styles();
+  const [response, setResponse] = useState('');
 
-    useEffect(()=>{
-      async function version(){
-        const version = await apiService.version('version');
-        setResponse(version.data);        
-      }
-      version();
-    },[]);
-  console.log(response);
-     
-       
+  useEffect(() => {
+    try {
+      const version = footerService.getVersion();
+      setResponse(version);
+    } catch (error) {
+      console.error(error);
+    }
+      
+  }, []);
+
   return (
     <>
-        <AppBar className={classes.footer} color="primary">
-            <Toolbar>
-                  <div data-testid="version">
-                <Typography variant="h6" >
-                    Version : {response.CurrentVersion}
-                </Typography>
-                </div>
-            </Toolbar>
-        </AppBar>
-
+      <AppBar className={classes.footer} >
+        <Toolbar>
+          <div>
+            <Card className={classes.card} data-testid="version" >
+              <Typography variant="h5" >
+                Version : {response.CurrentVersion}
+              </Typography>
+            </Card>
+          </div>
+        </Toolbar>
+      </AppBar>
     </>
   );
 };
