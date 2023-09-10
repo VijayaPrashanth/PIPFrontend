@@ -15,12 +15,6 @@ describe('AddItemDialog component with testid', () => {
         //const { getByTestId } = render(<AddItemDialog open={true} handleClose={handleCloseMock} />);
         render(<AddItemDialog open={true} handleClose={() => { }} />);
 
-        // eslint-disable-next-line testing-library/prefer-screen-queries
-        // const nameInput = getByTestId('namefield');
-        // eslint-disable-next-line testing-library/prefer-screen-queries
-        // const priceInput = getByTestId('pricefield');
-        // eslint-disable-next-line testing-library/prefer-screen-queries
-        // const unitInput = getByTestId('unitfield');
         const nameInput = screen.getByTestId('namefield');
         const priceInput = screen.getByTestId('pricefield');
         const unitInput = screen.getByTestId('unitfield');
