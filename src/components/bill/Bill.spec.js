@@ -1,22 +1,17 @@
 import React from "react";
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
-import Bill from "./Bill";
 import { render, screen } from "@testing-library/react";
+import Bill from "./Bill";
 
- configure({ adapter: new Adapter() });
 describe("Bill Basic rendering", () => {
-   
 
   it("Should have Bill id", () => {
-    render(<Bill/>);
+    render(<Bill />);
     expect(screen.getByTestId("bill")).toBeTruthy();
   });
 
-  it("Should display Bill Details Text",()=> {
+  it("Should display Bill Details Text", () => {
     render(<Bill />);
     expect(screen.getByText("Bill Details")).toBeInTheDocument();
   })
-  
+
 });
