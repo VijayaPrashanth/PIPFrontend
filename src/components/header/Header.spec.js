@@ -1,7 +1,7 @@
 import React from "react";
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { render,screen } from "@testing-library/react";
+import { act, fireEvent, render,screen, waitFor } from "@testing-library/react";
 
 import Header from "./Header";
 
@@ -42,12 +42,42 @@ import Header from "./Header";
     expect(billText).toBeDefined();
   });
 
+   it("should have shoppingcarticon", () => {
+     render(<Header />);
+
+     expect(screen.getByTestId("cart_icon")).toBeTruthy();
+   })
+
 });
 
-describe("should have shopping cart icon",()=>{
-  it("should have shoppingcarticon",()=>{
+
+describe("check whether the correct paths are provided",()=>{
+  const renderHeader = async ()=>{
     render(<Header/>);
-
-    expect(screen.getByTestId("cart")).toBeTruthy();
+    await (()=>screen.findByTestId('header'));
+  }
+  it('should have path to home',()=>{
+    render(<Header />);
+    const dailyneeds = screen.getByTestId('dailyneeds_link');
+    expect(dailyneeds).toBeInTheDocument();
+    expect(dailyneeds.href).toContain('/');
   })
-});
+  it('should have path to cart', () => {
+    render(<Header />);
+    const cart = screen.getByTestId('cart_link');
+    expect(cart).toBeInTheDocument();
+    expect(cart.href).toContain('/cart');
+  })
+  it('should have path to bill', () => {
+    render(<Header />);
+    const bill = screen.getByTestId('bill_link');
+    expect(bill).toBeInTheDocument();
+    expect(bill.href).toContain('/bill');
+  })
+  it('should have path to pricelist',()=>{
+    render(<Header/>);
+    const pricelist = screen.getByTestId('pricelist_link');
+    expect(pricelist).toBeInTheDocument();
+    expect(pricelist.href).toContain('/pricelist');
+  })
+})
