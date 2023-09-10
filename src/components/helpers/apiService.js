@@ -1,18 +1,40 @@
 import axios from "axios"
 
+const promiseWithErrorHandling = (promise) => {
+    return promise.catch(err => {
+        if (err.response && err.response.status === 500) {
+            // noinspection JSCheckFunctionSignatures
+            window.location.assign("/error");
+        } else {
+            throw err;
+        }
+    });
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    version: async (path) => {
-        return axios.get(`http://localhost:8080/${path}`);
+    get: async (path) => {
+        return promiseWithErrorHandling(axios.get(`http://localhost:8080/${path}`));
     },
-    add: async(path,payload)=>{
-        return axios.put(`http://localhost:8080/${path}`, payload);
+    post: async (path, payload) => {
+        return promiseWithErrorHandling(axios.post(`http://localhost:8080/${path}`, payload));
     },
-    getCart: async (path) => {
-        return axios.get(`http://localhost:8080/${path}`);
+    put: async (path, payload) => {
+        return promiseWithErrorHandling(axios.put(`http://localhost:8080/${path}`, payload));
     },
-    deleteItem: async(path,id)=> {
-        return axios.delete(`http://localhost:8080/${path}/${id}`);
-    }
+    putWithId: async (path, id, payload) => {
+        return promiseWithErrorHandling(axios.put(`http://localhost:8080/${path}/${id}`, payload))
+    },
+    delete: async (path, id) => {
+        return promiseWithErrorHandling(axios.delete(`http://localhost:8080/${path}/${id}`));
+    },
+    updateCartItem: async (path, id, payload) => {
+        return promiseWithErrorHandling(axios.put(`http://localhost:8080/${path}/${id}`, JSON.stringify(payload), {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }));
+    },
+
 }
 
