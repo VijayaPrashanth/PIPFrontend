@@ -2,7 +2,7 @@
 import apiService from "../../helpers/apiService"
 
 export default {
-    version: async() =>  {
+    getVersion: async() =>  {
         const response = await apiService.get('version');
         return response.data;
     }
