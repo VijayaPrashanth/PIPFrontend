@@ -14,15 +14,15 @@ import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import BlockIcon from "@material-ui/icons/Block";
 import Cart from "../cart/Cart";
 import Home from "../home/Home";
-
+import Login from "../login/Login";
 const RootRouter = () => {
 
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/pricelist" element={<PriceList />}
-        />
+        <Route exact path="/" element={<Login/>}/>
+        <Route exact path="/home" element={<Home/>}/>
+        <Route exact path="/pricelist" element={<PriceList />}/>
         <Route exact path="/bill" element={<Bill />} />
         <Route exact path="/error"
           element={<Error errorIcon={ErrorOutlineIcon} errorMessage={"Oops..Something went wrong"}
