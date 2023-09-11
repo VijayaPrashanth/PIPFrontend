@@ -7,17 +7,17 @@ export default makeStyles((theme) => ({
         justifyContent: "space-between"
     },
 
-    titleandcarticon:{
-        display:"flex",
-        flexWrap:"wrap",
-        alignContent:"flex-end",
-        justifyContent:"space-evenly",
-        padding:"40px"
+    titleandcarticon: {
+        display: "flex",
+        flexWrap: "wrap",
+        alignContent: "flex-end",
+        justifyContent: "space-evenly",
+        padding: "40px"
     },
 
-    shoppingcarticon:{
-        alignSelf:"flex-end",
-        justifyContent:"flex-end"
+    shoppingcarticon: {
+        alignSelf: "flex-end",
+        justifyContent: "flex-end"
     },
 
     crudhead: {
@@ -36,28 +36,45 @@ export default makeStyles((theme) => ({
     },
     updatebutton: {
         backgroundColor: "orange",
-        marginBottom:25
+        marginTop: 5,
+        marginBottom: 5
     },
     deletebutton: {
-        backgroundColor: "red"
+        backgroundColor: "crimson",
+        color: "white"
     },
-    tableentry:{
-        display:"flex",
-        justifyItems:"space-around",
-        flexDirection:"row",
-        alignItems:"center"
+    tableentry: {
+        display: "flex",
+        justifyItems: "space-around",
+        flexDirection: "row",
+        alignItems: "center"
     },
-    tablecell:{
-        alignSelf:"center",
-        alignItems:"center",
-        alignContent:"center",
-        justifyContent:"center",
+    tablecell: {
+        alignSelf: "center",
+        alignItems: "center",
+        alignContent: "center",
+        justifyContent: "center",
 
     },
-    noitems:{
-        justifyContent:"center",
-        alignItems:"center",
-        alignContent:"center"
+    noitems: {
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center"
+    },
+    containerdisplay: {
+        marginTop: 100
+    },
+    containerentries: {
+        backgroundColor: "wheat",
+        marginTop: 12
+    },
+    name: {
+        marginLeft: 25
+    }, 
+    tablerow: {
+        '& td, & th': {
+            borderBottom: 'none'
+        }
     }
 
 }));

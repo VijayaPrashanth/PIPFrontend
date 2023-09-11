@@ -1,137 +1,137 @@
-import { Button, Card, Container, Grid, Typography } from "@material-ui/core";
+import { Card, Container, IconButton, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
 import styles from "./styles/cartStyles.js"
 import apiService from "../helpers/apiService.js";
 import { useEffect, useState } from "react";
-import EditCart from "../editcart/EditCart.js";
-import { RemoveShoppingCartOutlined } from "@material-ui/icons";
-import ShoppingCartBadge from "../shoppingcartbadge/ShoppingCartBadge.js";
+import { AddCircle, Delete, RemoveCircle, RemoveShoppingCartOutlined } from "@material-ui/icons";
+import cartService from "./services/cartService.js";
 
 const Cart = () => {
     const classes = styles();
     const [response, setResponse] = useState([]);
-    
 
     useEffect(() => {
-        async function read() {
-            await apiService.getCart('cart').then((res) => { setResponse(res.data) }).catch((err)=>(console.log(err)));
-            
+        async function getItem() {
+            try {
+                await cartService.getItemsFromCart('cart')
+                    .then((res) => { setResponse(res.data) })
+            }
+            catch (err) {
+                console.log(err.response)
+            }
         }
-        read();
+        getItem();
     }, []);
 
-    <ShoppingCartBadge size={response.length} />
-    console.log("response from cart on reloading : ");
-    console.log(response);
-
-    const deleteItemFromCart = (id) => {
-        apiService.deleteItem('/cart', id).then((res) => console.log(res));
+    const deleteItemFromCart = async (id) => {
+        try {
+            await cartService.deleteItemFromCart('/cart', id).then((res) => console.log(res));
+        } catch (error) {
+            console.log(error);
+        }
         window.location.reload();
     }
 
-    const [itemIndex, setItemIndex] = useState(0);
+    const onDecrement = (item) => {
+        if (item.itemsCount === 1) {
+            try {
+                cartService.deleteItemFromCart('cart', item.id).then((res) => console.log(res));
+            } catch (error) {
+                console.log(error);
+            }
 
-    const checkIndex = (getIndex, itemEditable) => {
-        //setUpdate(true);
-        setItemIndex(getIndex);
-        console.log("Index of the editing item : " + getIndex);
-        console.log("Item to be edited : ");
-        console.log(itemEditable);
-        console.log("edited:");
-        console.log(itemEdited);
+            window.location.reload();
+        }
+        if (item.itemsCount > 1) {
+            item.itemsCount -= 1;
+            try {
+                apiService.updateCartItem('cart', item.id, item.itemsCount).then((res) => setResponse(res.data));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
 
+    const onIncrement = (item) => {
+        if (item.itemsCount + 1 <= 10) {
+            item.itemsCount += 1;
+            try {
+                apiService.updateCartItem('cart', item.id, item.itemsCount).then((res) => setResponse(res.data));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
 
-    };
-
-    const [update, setUpdate] = useState(false);
-    const [itemEdited, setItem] = useState({});
     return (
         <>
-            {
-                (response.length > 0) ? (
-                    <div data-testid="cart">
-                        <div className={classes.titleandcarticon}>
-                            <div data-testid="pricelist" className={classes.pricelistheading}>
-                                <Typography variant="h5">
-                                    Cart
-                                </Typography>
-                            </div>
-                        </div>
-                        <div >
-                            <EditCart open={update} handleClose={update} item={itemEdited} index={itemIndex} editResponse={response} />
-
+            <Container className={classes.containerdisplay}>
+                {
+                    (response.length > 0) ? (
+                        <Container align="center" className={classes.containerdisplay}>
+                            <Table style={{ width: "45%" }}>
+                                <TableBody>
+                                    <Card className={classes.containerentries}>
                                         {
                                             response.map((item, index) => (
-                                                <Container maxWidth="xs">
 
-                                                
-                                                <Card>
-                                                    <Grid container justifyContent="center" spacing={5}>
-                                                        <Grid item>
-                                                            <Typography variant='subtitle1'>
-                                                                {item.name}
-                                                            </Typography>
-                                                        </Grid>
-                                                            <Grid item>
-                                                                <Grid container spacing={2}>
-                                                                    <Grid item>
-                                                                        <Typography variant='subtitle1'>
-                                                                            {item.quantity}
-                                                                        </Typography>
-                                                                    </Grid>
-                                                                    <Grid item>
-                                                                        <Typography variant='subtitle1'>
-                                                                            {item.unit}
-                                                                        </Typography>
-                                                                    </Grid>
-                                                                </Grid>
-                                                            </Grid>
-                                                    </Grid>
-                                                    
-                                                    <Grid container spacing={3} data-testid="edit" justifyContent="center">
-                                                        <Grid item>
-                                                            <Button variant="contained" 
-                                                            className={classes.updatebutton} 
-                                                            onClick={(e) => { 
-                                                                setUpdate(true); 
-                                                                setItem(item); 
-                                                                checkIndex(index, item);
-                                                                 }}>
-                                                                edit
-                                                            </Button>
-                                                            
+                                                <TableRow className={classes.tablerow}>
 
-                                                        </Grid>
-                                                        <Grid item>
-                                                            <Button variant="contained" className={classes.deletebutton} onClick={(e) => deleteItemFromCart(item.id)} data-testid="delete">
-                                                                delete
-                                                            </Button>
-                                                        </Grid>
-                                                    </Grid>
-                                                </Card>
-                                                </Container>
+                                                    <TableCell data-testid="name">
+                                                        <Typography variant='subtitle1' className={classes.name}>
+                                                            {item.name}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell data-testid="unit">
+                                                        <Typography variant='subtitle1'>
+                                                            {item.unit}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell >
+                                                        <IconButton onClick={(e) => {
+                                                            onDecrement(item);
+                                                        }} data-testid="decrement_button">
+                                                            <RemoveCircle />
+                                                        </IconButton>
+                                                    </TableCell>
+                                                    <TableCell data-testid="itemscount" >
+                                                        <Typography variant='subtitle1'>
+                                                            {item.itemsCount}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell >
+                                                        <IconButton onClick={(e) => {
+                                                            onIncrement(item);
+                                                        }} data-testid="increment_button">
+                                                            <AddCircle />
+                                                        </IconButton>
+                                                    </TableCell>
+                                                    <TableCell >
+                                                        <IconButton aria-label="delete" onClick={(e) => deleteItemFromCart(item.id)} data-testid="delete_button">
+                                                            <Delete />
+                                                        </IconButton>
+                                                    </TableCell>
+                                                </TableRow>
                                             ))}
-
-                    </div>
-                    </div >
-                ) :
-(<div data-testid="empty cart">
-    <Container>
-        <div className={classes.noitems}>
-            <Card>
-
-                <Typography>
-                    No items in cart!!!
-                </Typography>
-                <RemoveShoppingCartOutlined/>
-            </Card>
-        </div>
-
-
-    </Container>
-
-</div>
-)
-            }
+                                    </Card>
+                                </TableBody>
+                            </Table>
+                        </Container>
+                    ) :
+                        (<div data-testid="empty cart">
+                            <Container>
+                                <div className={classes.noitems}>
+                                    <Card>
+                                        <Typography data-testid="emptyCart">
+                                            No items in cart!!!
+                                        </Typography>
+                                        <RemoveShoppingCartOutlined />
+                                    </Card>
+                                </div>
+                            </Container>
+                        </div>
+                        )
+                }
+            </Container>
         </>
     );
 };
