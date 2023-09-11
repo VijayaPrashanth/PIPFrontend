@@ -13,14 +13,14 @@ const AddItemDialog = ({ open, handleClose }) => {
     const [addUnit, setUnit] = useState('');
     const [responseForAdd, setResponseForAdd] = useState({});
 
-    const performAdd = () => {
+    const performAdd = async() => {
         const payload = {
             name: addName,
             price: parseFloat(addPrice),
             unit: addUnit
         }
         try {
-            pricelistService.addItemToInventory(payload).then((res) => setResponseForAdd(res.data));
+            await pricelistService.addItemToInventory(payload).then((res) => setResponseForAdd(res.data));
         } catch (error) {
             console.log(error);
         }

@@ -13,32 +13,30 @@ import Error from "../common/Error";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import BlockIcon from "@material-ui/icons/Block";
 import Cart from "../cart/Cart";
-
-//import Header from "../header/Header";
-
+import Home from "../home/Home";
 
 const RootRouter = () => {
-    
-    return (
-        <Router>
-            <Routes>
-                <Route exact path="/"/>
-                <Route exact path="/pricelist" element={<PriceList/>}
-                />
-                <Route exact path="/bill" element={<Bill/>}/>
-                <Route exact path="/error" 
-                element={<Error errorIcon={ErrorOutlineIcon} errorMessage={"Oops..Something went wrong"}
-                    />
-                  }
-                />
-                <Route exact path="/cart" element={<Cart/>}/>
-                <Route element={
-                    <Error errorIcon={BlockIcon} errorMessage={"Not Found"} />
-                  }
-                />
-            </Routes>
-        </Router>
-    );
+
+  return (
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/pricelist" element={<PriceList />}
+        />
+        <Route exact path="/bill" element={<Bill />} />
+        <Route exact path="/error"
+          element={<Error errorIcon={ErrorOutlineIcon} errorMessage={"Oops..Something went wrong"}
+          />
+          }
+        />
+        <Route exact path="/cart" element={<Cart />} />
+        <Route element={
+          <Error errorIcon={BlockIcon} errorMessage={"Not Found"} />
+        }
+        />
+      </Routes>
+    </Router>
+  );
 };
 
 RootRouter.propTypes = {

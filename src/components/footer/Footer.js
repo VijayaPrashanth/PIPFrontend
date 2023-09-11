@@ -9,8 +9,7 @@ const Footer = () => {
 
   useEffect(() => {
     try {
-      const version = footerService.getVersion();
-      setResponse(version);
+      footerService.getVersion().then((res)=>setResponse(res));
     } catch (error) {
       console.error(error);
     }

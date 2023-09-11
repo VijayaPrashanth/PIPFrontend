@@ -46,8 +46,6 @@ const EditItemDialog = ({ open, handleClose, item }) => {
         <>
             <Dialog open={open} onClose={handleClose} data-testid="editdialog">
                 <div className={classes.titleAndCloseButton}>
-                    <div >
-                    </div>
                     <div className={classes.closeButton} data-testid="closeButton">
                         <Close onClick={handleClose} data-testid="close_button" />
                     </div>

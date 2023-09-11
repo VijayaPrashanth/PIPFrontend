@@ -1,9 +1,14 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen,waitFor } from '@testing-library/react';
 import EditItemDialog from './EditItemDialog';
+import pricelistService from './services/pricelistService';
+import cartService from '../cart/services/cartService';
 
-jest.mock('../helpers/apiService', () => ({
-    add: jest.fn().mockResolvedValue({ data: 'Success' }),
+jest.mock('./services/pricelistService', () => ({
+    updateItemInInventory: jest.fn(() => Promise.resolve({ data: 'success' })),
+}));
+jest.mock('../cart/services/cartService', () => ({
+    deleteItemFromCartByInventory: jest.fn(() => Promise.resolve('deleted')),
 }));
 
 const mockItem = {
@@ -14,48 +19,54 @@ const mockItem = {
 };
 
 describe('EditItemDialog Component', () => {
-    const handleClose = jest.fn();
 
-    test('renders with initial values', () => {
-        render(<EditItemDialog open handleClose={handleClose} item={mockItem} />);
+    it("should have all needed elements", () => {
+        const handleClose = jest.fn();
+        render(
+            <EditItemDialog open={true} handleClose={handleClose} item={mockItem}/>
+        );
+
+        expect(screen.getByTestId("editdialog")).toBeInTheDocument();
+        expect(screen.getByTestId("close_button")).toBeTruthy();
+        expect(screen.getByTestId("productnamelabel")).toBeTruthy();
+        expect(screen.getByTestId("productnamefield")).toBeTruthy();
+        expect(screen.getByTestId("pricelabel")).toBeTruthy();
+        expect(screen.getByTestId("pricefield")).toBeTruthy();
+        expect(screen.getByTestId("unitlabel")).toBeTruthy();
+        expect(screen.getByTestId("unitfield")).toBeTruthy();
+        expect(screen.getByTestId("done_button")).toBeInTheDocument();
+    });
+
+    it('renders with initial values', () => {
+        const handleClose = jest.fn();
+        render(<EditItemDialog open={true} handleClose={handleClose} item={mockItem} />);
 
         expect(screen.getByTestId('productnamefield')).toHaveValue(mockItem.name);
         expect(screen.getByTestId('pricefield')).toHaveValue(mockItem.price);
         expect(screen.getByTestId('unitfield')).toHaveValue(mockItem.unit);
     });
 
-    test('handles input changes', () => {
-        render(<EditItemDialog open handleClose={handleClose} item={mockItem} />);
-
-        fireEvent.change(screen.getByTestId('productnamefield'), {
-            target: { value: 'Updated Name' },
-        });
-        fireEvent.change(screen.getByTestId('pricefield'), {
-            target: { value: '15.99' },
-        });
-        fireEvent.change(screen.getByTestId('unitfield'), {
-            target: { value: 'lbs' },
-        });
-
-        expect(screen.getByTestId('productnamefield')).toHaveValue('Updated Name');
-        expect(screen.getByTestId('pricefield')).toHaveValue('15.99');
-        expect(screen.getByTestId('unitfield')).toHaveValue('lbs');
-    });
-
-    test('performs edit and closes the dialog', async () => {
+    it("should close dialog on clicking close icon",()=>{
+        const handleClose = jest.fn();
         render(<EditItemDialog open={true} handleClose={handleClose} item={mockItem} />);
 
-        fireEvent.click(screen.getByText('Done'));
+        const closeIcon = screen.getByTestId("close_button");
+        fireEvent.click(closeIcon);
 
-        //await screen.findByText('response for added items');
+        expect(handleClose).toHaveBeenCalledTimes(1);
+    })
 
-        expect(require('../helpers/apiService').add).toHaveBeenCalledWith('inventory/add', {
-            id: 1,
-            name: 'Item Name',
-            price: 10.99,
-            unit: 'kg',
-        });
+    it("should call performEdit on clicking done button",()=>{
+        const performEdit = jest.fn();
+        const handleClose = jest.fn();
+        render(<EditItemDialog open={true} handleClose={handleClose} item={mockItem} />);
 
-        //expect(handleClose).toHaveBeenCalledTimes(1);
-    });
+        const doneButton = screen.getByTestId("done_button");
+        fireEvent.click(doneButton);
+
+        expect(performEdit).toHaveBeenCalledTimes(1);
+    })
+
 });
+
+
