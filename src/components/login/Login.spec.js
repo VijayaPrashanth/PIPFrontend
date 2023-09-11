@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Login from "./login";
+import Login from "./LoginPage";
 
 describe("Basic rendering of login component",()=>{
     it("should contain username and password fields",()=>{        

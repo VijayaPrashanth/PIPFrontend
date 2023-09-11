@@ -13,13 +13,13 @@ const Login = ({onLogin}) => {
         <>
         <div className={classes.loginContainer}>
                 <Formik initialValues={initialValues}
-                onSubmit={handleLogin}
+                // onSubmit={handleLogin}
                     validationSchema={formSchema}
                     >
-                     {   (props) => {
+                     {/* {   (props) => {
                         const {
                         isValid,
-                        } = props;
+                        } = props; */}
                 <Form className={classes.loginForm}>
                     <FormikTextField
                         data-testid="username"
@@ -44,14 +44,14 @@ const Login = ({onLogin}) => {
                     <Button data-testid="loginButton"
                         variant="contained"
                         type="submit"
-                        disabled={!isValid}
+                        // disabled={!isValid}
                         color="secondary"
                         className={classes.loginButton}>
                         Login
                     </Button>
                 </Form>
-                     }
-                    }
+                     {/* }
+                    } */}
             </Formik>
         </div>
         </>
