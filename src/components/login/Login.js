@@ -2,14 +2,24 @@ import { Button } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import React from "react";
 import FormikTextField from "../formik/FormikTextField";
+import { formSchema, initialValues } from "./services/loginFormService";
 import styles from "./styles/loginStyles";
+import useLogin from "./hooks/useLogin";
 
-const Login = () => {
+const Login = ({onLogin}) => {
     const classes = styles();
+    const { errorMessage, handleLogin } = useLogin(onLogin);
     return (
         <>
         <div className={classes.loginContainer}>
-            <Formik >
+                <Formik initialValues={initialValues}
+                onSubmit={handleLogin}
+                    validationSchema={formSchema}
+                    >
+                     {   (props) => {
+                        const {
+                        isValid,
+                        } = props;
                 <Form className={classes.loginForm}>
                     <FormikTextField
                         data-testid="username"
@@ -28,15 +38,20 @@ const Login = () => {
                         label="Password"
                         >
                     </FormikTextField>
+                    {
+                        errorMessage()
+                    }
                     <Button data-testid="loginButton"
                         variant="contained"
                         type="submit"
-                        // disabled={!isValid}
+                        disabled={!isValid}
                         color="secondary"
                         className={classes.loginButton}>
                         Login
                     </Button>
                 </Form>
+                     }
+                    }
             </Formik>
         </div>
         </>
