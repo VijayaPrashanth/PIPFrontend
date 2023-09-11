@@ -20,13 +20,16 @@ const Error = ({ errorIcon: ErrorIcon, errorMessage }) => {
 
     return (
         <>
-            {displayAble &&
+            <div data-testid="error_icon">
+
+           {displayAble &&
                 (<div className={classes.errorContent}>
-                    <ErrorIcon className={classes.errorIcon} />
+                    <ErrorIcon className={classes.errorIcon}  />
                     <Typography variant='h4'>
                         {errorMessage}
                     </Typography>
                 </div>)}
+            </div> 
         </>
     );
 };
