@@ -14,7 +14,7 @@ import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import BlockIcon from "@material-ui/icons/Block";
 import Cart from "../cart/Cart";
 import Home from "../home/Home";
-import Login from "../login/LoginPage";
+import Login from "../login/Login";
 
 const RootRouter = () => {
 
