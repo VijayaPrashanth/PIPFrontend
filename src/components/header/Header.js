@@ -27,7 +27,7 @@ const Header = () => {
             <AppBar className={classes.appbar} position={"sticky"} data-tesid="header">
                 <Toolbar className={classes.toolbar}>
                     <div data-testid="dailyneeds">
-                        <a href="/" className={classes.headerLink} variant="contained" data-testid="dailyneeds_link">
+                        <a href="/home" className={classes.headerLink} variant="contained" data-testid="dailyneeds_link">
                             Daily Needs
                         </a>
                     </div>

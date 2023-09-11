@@ -60,7 +60,7 @@ describe("check whether the correct paths are provided",()=>{
     render(<Header />);
     const dailyneeds = screen.getByTestId('dailyneeds_link');
     expect(dailyneeds).toBeInTheDocument();
-    expect(dailyneeds.href).toContain('/');
+    expect(dailyneeds.href).toContain('/home');
   })
   it('should have path to cart', () => {
     render(<Header />);
