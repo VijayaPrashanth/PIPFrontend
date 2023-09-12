@@ -1,14 +1,10 @@
 import './App.css';
-import Footer from './components/footer/Footer';
-import Header from './components/header/Header';
-import RootRouter from './components/router/RootRouter';
+import Layout from './components/layout/Layout';
 
 function App() {
   return (
     <>
-    <Header/>
-    <RootRouter/>
-    <Footer/>
+    <Layout/>
     </>
   );
 }

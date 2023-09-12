@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import styles from "../styles/loginStyles";
+import { Navigate } from "react-router-dom";
 
 export default(onLogin)=>{
     const classes = styles();
@@ -24,6 +25,7 @@ export default(onLogin)=>{
         try {
             await onLogin(username,password);
             setShowError(false);
+            return <Navigate to="/" replace />
         } catch (error) {
             if (error.response && error.response === 401) {
                 setShowError(true);

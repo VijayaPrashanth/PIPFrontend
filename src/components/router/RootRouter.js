@@ -1,7 +1,7 @@
 import {
   BrowserRouter as Router,
   Route,
-  Routes
+  Routes,
 } from "react-router-dom";
 
 import React from "react";
@@ -15,22 +15,23 @@ import BlockIcon from "@material-ui/icons/Block";
 import Cart from "../cart/Cart";
 import Home from "../home/Home";
 import Login from "../login/Login";
+import ProtectedRoute from "../login/ProtectedRoute";
 
-const RootRouter = () => {
+const RootRouter = ({isAuthenticated,onLogin}) => {
 
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Login/>}></Route>
-        <Route exact path="/home" element={<Home/>}/>
-        <Route exact path="/pricelist" element={<PriceList />}/>
-        <Route exact path="/bill" element={<Bill />} />
+        <Route exact path="/" element={<ProtectedRoute element={<Home />}  isAuthenticated={isAuthenticated}></ProtectedRoute>} isAuthenticated={isAuthenticated}/>
+        <Route exact path="/login" element={<Login onLogin={onLogin} isAuthenticated={isAuthenticated}/>}></Route>
+        <Route exact path="/pricelist" element={<ProtectedRoute element={<PriceList/>} isAuthenticated={isAuthenticated} />}/>
+        <Route exact path="/bill" element={<ProtectedRoute element={<Bill />} isAuthenticated={isAuthenticated} />} />
         <Route exact path="/error"
           element={<Error errorIcon={ErrorOutlineIcon} errorMessage={"Oops..Something went wrong"}
           />
           }
         />
-        <Route exact path="/cart" element={<Cart />} />
+        <Route exact path="/cart" element={<ProtectedRoute element={<Cart/>} isAuthenticated={isAuthenticated} />} />
         <Route element={
           <Error errorIcon={BlockIcon} errorMessage={"Not Found"} />
         }
@@ -41,8 +42,8 @@ const RootRouter = () => {
 };
 
 RootRouter.propTypes = {
-  isAuthenticated: PropTypes.bool,
-  onLogin: PropTypes.func,
+  isAuthenticated: PropTypes.bool.isRequired,
+  onLogin: PropTypes.func.isRequired,
 };
 
 export default RootRouter;

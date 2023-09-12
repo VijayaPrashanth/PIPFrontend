@@ -31,6 +31,10 @@ export default makeStyles((theme) => ({
     alignSelf: "flex-end",
     justifyContent: "flex-end",
     color:"white"
+  }, logoutLink: {
+    display: "flex",
+    alignItems: "center",
+    cursor: "pointer",
   }
 
 }));

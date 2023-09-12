@@ -1,37 +1,22 @@
 // noinspection ES6CheckImport
-import { Navigate, Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import React from "react";
-import PropTypes from "prop-types";
+import { isLoggedIn, logout } from "../helpers/authService";
 
-const ProtectedRoute = ({ element: Element, isAuthenticated, ...rest }) => {
+const ProtectedRoute = ({ element,isAuthenticated }) => {
 
-    const renderedComponent = (props) => {
-        const { location } = props;
-        return isAuthenticated
-            ? (<Element {...props} />)
-            : (
-                <Navigate
-                    to={{
-                        pathname: "/login",
-                        state: {
-                            from: location
-                        }
-                    }}
-                />
-            );
-    };
-
-    return (
-        <Route
-            {...rest}
-            component={renderedComponent}
-        />
-    );
-}
-
-ProtectedRoute.propTypes = {
-    Element: PropTypes.elementType.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired
+    if(!isLoggedIn() && !isAuthenticated) {
+        console.log(isLoggedIn);
+        console.log(isAuthenticated);
+        logout();
+        return <Navigate to="/login" replace/>
+    }
+    else{
+        console.log("on success:");
+        console.log(isLoggedIn());
+        console.log(isAuthenticated);
+    }
+    return element;
 };
 
 export default ProtectedRoute;

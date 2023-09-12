@@ -4,17 +4,15 @@ import styles from './styles/homeStyles';
 import cartService from '../cart/services/cartService';
 import pricelistService from '../priceList/services/pricelistService';
 
-const Home = () => {
+const Home = ({isAuthenticated}) => {
     const classes = styles();
     const [responseFromInventory, setResponseFromInventory] = useState([]);
-    const [responseFromCart, setResponseFromCart] = useState([]);
     const [itemsCount, setItemsCount] = useState(0);
     const [cartres, setCartres] = useState([]);
 
     useEffect(() => {
         try {
             pricelistService.getItemsFromInventory().then((res) => setResponseFromInventory(res.data));
-            cartService.getItemsFromCart('cart').then((res) => setResponseFromCart(res.data));
         } catch (error) {
             console.log(error);
         }
@@ -40,7 +38,7 @@ const Home = () => {
         <>
             <div data-testid="home">
                 <Container className={classes.containerdisplay} align="center" >
-                    <Table style={{ width: "35%" }}>
+                    <Table style={{ width: "40%" }}>
                         <TableBody>
                             <Card color='primary' className={classes.containerentries} >
                                 {

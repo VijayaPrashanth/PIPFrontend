@@ -1,25 +1,30 @@
 import { Button } from "@material-ui/core";
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import FormikTextField from "../formik/FormikTextField";
 import { formSchema, initialValues } from "./services/loginFormService";
 import styles from "./styles/loginStyles";
 import useLogin from "./hooks/useLogin";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const Login = ({onLogin}) => {
+const Login = ({onLogin,isAuthenticated}) => {
     const classes = styles();
     const { errorMessage, handleLogin } = useLogin(onLogin);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            console.log("login page");
+            navigate("/");
+        } 
+    }
+    );
+
     return (
-        <>
         <div className={classes.loginContainer}>
-                <Formik initialValues={initialValues}
-                // onSubmit={handleLogin}
-                    validationSchema={formSchema}
-                    >
-                     {/* {   (props) => {
-                        const {
-                        isValid,
-                        } = props; */}
+            <Formik 
+            initialValues={initialValues} 
+            onSubmit={handleLogin} validationSchema={formSchema} >
                 <Form className={classes.loginForm}>
                     <FormikTextField
                         data-testid="username"
@@ -44,17 +49,13 @@ const Login = ({onLogin}) => {
                     <Button data-testid="loginButton"
                         variant="contained"
                         type="submit"
-                        // disabled={!isValid}
                         color="secondary"
                         className={classes.loginButton}>
                         Login
                     </Button>
                 </Form>
-                     {/* }
-                    } */}
             </Formik>
         </div>
-        </>
     )
 };
 

@@ -5,14 +5,14 @@ import { useEffect, useState } from "react";
 import { AddCircle, Delete, RemoveCircle, RemoveShoppingCartOutlined } from "@material-ui/icons";
 import cartService from "./services/cartService.js";
 
-const Cart = () => {
+const Cart = ({isAuthenticated}) => {
     const classes = styles();
     const [response, setResponse] = useState([]);
 
     useEffect(() => {
         async function getItem() {
             try {
-                await cartService.getItemsFromCart('cart')
+                await cartService.getItemsFromCart()
                     .then((res) => { setResponse(res.data) })
             }
             catch (err) {
@@ -24,7 +24,7 @@ const Cart = () => {
 
     const deleteItemFromCart = async (id) => {
         try {
-            await cartService.deleteItemFromCart('/cart', id).then((res) => console.log(res));
+            await cartService.deleteItemFromCart(id).then((res) => console.log(res));
         } catch (error) {
             console.log(error);
         }
@@ -34,7 +34,7 @@ const Cart = () => {
     const onDecrement = (item) => {
         if (item.itemsCount === 1) {
             try {
-                cartService.deleteItemFromCart('cart', item.id).then((res) => console.log(res));
+                cartService.deleteItemFromCart(item.id).then((res) => console.log(res));
             } catch (error) {
                 console.log(error);
             }
@@ -74,7 +74,7 @@ const Cart = () => {
                                         {
                                             response.map((item, index) => (
 
-                                                <TableRow className={classes.tablerow}>
+                                                <TableRow className={classes.tablerow} key={item.id}>
 
                                                     <TableCell data-testid="name">
                                                         <Typography variant='subtitle1' className={classes.name}>
