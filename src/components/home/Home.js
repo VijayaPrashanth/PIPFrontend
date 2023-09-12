@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Container, Table, TableBody, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
+import { Badge, Button, Card, Container, Table, TableBody, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
 import styles from './styles/homeStyles';
 import cartService from '../cart/services/cartService';
 import pricelistService from '../priceList/services/pricelistService';
@@ -9,10 +9,12 @@ const Home = ({isAuthenticated}) => {
     const [responseFromInventory, setResponseFromInventory] = useState([]);
     const [itemsCount, setItemsCount] = useState(0);
     const [cartres, setCartres] = useState([]);
+    const [itemscount,setItemscount] = useState([]);
 
     useEffect(() => {
         try {
             pricelistService.getItemsFromInventory().then((res) => setResponseFromInventory(res.data));
+            cartService.getItemsFromCart().then((res)=>setItemscount(res.data));
         } catch (error) {
             console.log(error);
         }
@@ -33,12 +35,12 @@ const Home = ({isAuthenticated}) => {
             console.log(error);
         }
     }
-
+    
     return (
         <>
             <div data-testid="home">
                 <Container className={classes.containerdisplay} align="center" >
-                    <Table style={{ width: "40%" }}>
+                    <Table style={{ width: "45%" }}>
                         <TableBody>
                             <Card color='primary' className={classes.containerentries} >
                                 {
@@ -76,6 +78,8 @@ const Home = ({isAuthenticated}) => {
                                                     data-testid="addButton">
                                                     add
                                                 </Button>
+                                            </TableCell>
+                                            <TableCell>
                                             </TableCell>
                                         </TableRow>
                                     ))

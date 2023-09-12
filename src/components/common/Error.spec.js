@@ -15,6 +15,11 @@ import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import { createRoot } from "react-dom/client";
 configure({ adapter: new Adapter() });
 
+describe("simple test", () => {
+    it("should contain simple test", () => {
+
+    })
+})
 describe("Basic rendering", () => {
     it("Should render with icon and message", async () => {
         const testErrorMessage = "Test Error";

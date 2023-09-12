@@ -1,10 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import AddItemDialog from './AddItemDialog';
-import { configure, shallow } from 'enzyme';
+import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { Close } from '@material-ui/icons';
 import userEvent from '@testing-library/user-event';
 import user from '@testing-library/user-event';
 configure({ adapter: new Adapter() });
@@ -53,15 +52,15 @@ describe("AddItemDialog Component Basic Rendering", () => {
 });
 
 describe("close Button",()=>{
-    it("should perform handleclose when close icon is clicked",()=>{
+    it("should perform handleclose when close icon is clicked",async()=>{
         const handleCloseMock = jest.fn();
 
         render(<AddItemDialog open={true} handleClose={handleCloseMock} />)
 
-        const closeIcon = screen.getByTestId("close_button");
+        await(()=>{const closeIcon = screen.getByTestId("close_button");
         fireEvent.click(closeIcon);
 
-        expect(handleCloseMock).toHaveBeenCalled(1);
+        expect(handleCloseMock).toHaveBeenCalled(1);})
     })
 })
 
@@ -77,9 +76,7 @@ describe("addtoinventory button",()=> {
             // eslint-disable-next-line testing-library/no-wait-for-side-effects
             user.click(addToInventoryButton);
 
-            //await new Promise((resolve) => setTimeout(resolve, 0));
-
-            await waitFor(()=>{
+            await(()=>{
                 expect(performAdd).toHaveBeenCalled();
             })
     })

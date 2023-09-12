@@ -5,27 +5,26 @@ import { ExitToApp, ShoppingCart } from "@material-ui/icons";
 import cartService from "../cart/services/cartService";
 import { isLoggedIn } from "../helpers/authService";
 
-const Header = ({onLogout,isAuthenticated}) => {
+const Header = ({ onLogout, isAuthenticated }) => {
     const classes = styles();
 
     const [cartData, setCartData] = useState({});
     const [cartResponse, setCartResponse] = useState();
-    const [length,setLength] = useState();
+    const [length, setLength] = useState();
 
     useEffect(() => {
         try {
-            if(isLoggedIn)
-            {
+            if (isLoggedIn) {
                 cartService.getItemsFromCart('cart')
-                .then((res) => { setCartData(res.data); setCartResponse(res);setLength(res.data.length) });
+                    .then((res) => { setCartData(res.data); setCartResponse(res); setLength(res.data.length) });
             }
         } catch (error) {
             console.error(error);
         }
     }, []);
 
-    const handleHeader=()=>{
-        if(isAuthenticated){
+    const handleHeader = () => {
+        if (isAuthenticated) {
             return (
                 <>
                     <div className={classes.toolbar}>
@@ -70,31 +69,6 @@ const Header = ({onLogout,isAuthenticated}) => {
                     </div>
                     <div className={classes.userSection}>
                         {handleHeader()}
-                    {/* </div>
-                    <div className={classes.userSection} > */}
-                        {/* <div className={classes.shoppingcarticon} data-testid="cart_icon">
-                            <a href='/cart' data-testid="cart_link">
-                                <Badge badgeContent={cartData.length} color="secondary" overlap="rectangular">
-                                    <ShoppingCart color="secondary" />
-                                </Badge>
-                            </a>
-                        </div>
-                        <div className={classes.userSection} data-testid="pricelist">
-                            <a href={"/pricelist"} className={classes.headerLink} variant="contained" data-testid="pricelist_link">
-                                PriceList
-                            </a>
-                        </div>
-                        <div className={classes.userSection} data-testid="bill">
-                            <a href={"/bill"} className={classes.headerLink} variant="contained" data-testid="bill_link">
-                                Bill
-                            </a>
-                        </div> */}
-                        {/* <div onClick={onLogout} className={classes.logoutLink}>
-                            <ExitToApp />
-                            <Typography className={classes.headerLogo} variant="body1">
-                                Logout
-                            </Typography>
-                        </div> */}
                     </div>
                 </Toolbar>
             </AppBar>

@@ -4,7 +4,10 @@ import Layout from "./Layout";
 import Header from "../header/Header";
 import RootRouter from "../router/RootRouter";
 import useAuth from "./hooks/useAuth";
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
+configure({ adapter: new Adapter() });
 const testHandleLogin = jest.fn();
 const testHandleLogout = jest.fn();
 
@@ -27,7 +30,6 @@ describe("Basic rendering", function () {
         expect(headerComponent.prop("onLogout")).toBe(testHandleLogout);
         expect(headerComponent.prop("isAuthenticated")).toBe(true);
         expect(rootRouterComponent.prop("onLogin")).toBe(testHandleLogin);
-        expect(rootRouterComponent.prop("isAuthenticated")).toBe(true);
         expect(rootRouterComponent.prop("isAuthenticated")).toBe(true);
     });
 });

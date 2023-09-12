@@ -119,9 +119,9 @@ const PriceList = () => {
                     
                     (
                      <>
-                                        { (displayAble) &&(<Typography variant='subtitle1' align='center' data-testid="emptyInventory">
-                                            Will be updating soon.....
-                                        </Typography>)}
+                        { (displayAble) &&(<Typography variant='subtitle1' align='center' data-testid="emptyInventory">
+                            Will be updating soon.....
+                        </Typography>)}
                        </>            
                     )
             }

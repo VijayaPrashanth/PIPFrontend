@@ -1,43 +1,60 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { ProtectedRoute } from ".";
+import { ProtectedRoute } from "./ProtectedRoute";
 // noinspection ES6CheckImport
-import { Redirect, Route } from "react-router-dom";
+import { MemoryRouter, Redirect, Route, Router } from "react-router-dom";
+import { render, screen } from "@testing-library/react";
+import { logout } from "../helpers/authService";
 
-describe("Basic Rendering", () => {
-    const TestComponent = (props) => <div {...props} />;
-    const testPath = "/testPath";
+jest.mock("../helpers/authService", () => ({
+    isLoggedIn: jest.fn(),
+    logout: jest.fn(),
+}));
+describe("simple test", () => {
+    it("should contain simple test", () => {
 
-    it("Should render component if authenticated", () => {
-        const protectedRouteComponent = shallow(
-            <ProtectedRoute isAuthenticated={true} component={TestComponent} path={testPath} testProp="testValue" />
-        );
-
-        const routeComponent = protectedRouteComponent.find(Route);
-        const renderedComponent = routeComponent.prop("component")({ testProp: "testVal" });
-
-        expect(routeComponent.prop("path")).toBe("/testPath")
-        expect(routeComponent.prop("testProp")).toBe("testValue")
-        expect(renderedComponent).toEqual(<TestComponent testProp="testVal" />);
+    })
+})
+describe("ProtectedRoute Component", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
     });
 
-    it("Should render redirect if not authenticated", () => {
-        const protectedRouteComponent = shallow(
-            <ProtectedRoute isAuthenticated={false} component={TestComponent} path={testPath} testProp="testValue" />
-        );
+it("should render the element when user is authenticated", async() => {
 
-        const routeComponent = protectedRouteComponent.find(Route);
-        const renderedComponent = routeComponent.prop("component")({ location: "testLocation" });
+    jest.spyOn(React, "useContext").mockReturnValue({ isAuthenticated: true });
 
-        expect(routeComponent.prop("path")).toBe("/testPath")
-        expect(routeComponent.prop("testProp")).toBe("testValue")
-        expect(renderedComponent).toEqual(<Redirect
-            to={{
-                pathname: "/login",
-                state: {
-                    from: "testLocation"
-                }
-            }}
-        />);
-    });
+    const elementToRender = <div data-testid="element">Hello, World!</div>;
+
+    const { getByTestId } = render(
+        <MemoryRouter initialEntries={["/"]}>
+            <Route path="/" element={elementToRender}>
+                <ProtectedRoute isAuthenticated={true} />
+            </Route>
+        </MemoryRouter>
+    );
+
+    await(()=>{
+        const renderedElement = getByTestId("element");
+        expect(renderedElement).toBeInTheDocument();
+    })
+});
+
+it("should redirect to /login and call logout when user is not authenticated", async() => {
+
+    jest.spyOn(React, "useContext").mockReturnValue({ isAuthenticated: false });
+
+    const { getByTestId } = render(
+        <Router>
+            <Route path="/login">
+                <div data-testid="login-page">Login Page</div>
+            </Route>
+            <ProtectedRoute element={<div data-testid="element">Hello, World!</div>} isAuthenticated={false} />
+        </Router>
+    );
+
+
+    await(()=>{expect(logout).toHaveBeenCalled();
+    const loginPage =getByTestId("login-page");
+    expect(loginPage).toBeInTheDocument();})
+});
 });

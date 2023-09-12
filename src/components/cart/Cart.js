@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { AddCircle, Delete, RemoveCircle, RemoveShoppingCartOutlined } from "@material-ui/icons";
 import cartService from "./services/cartService.js";
 
-const Cart = ({isAuthenticated}) => {
+const Cart = () => {
     const classes = styles();
     const [response, setResponse] = useState([]);
 
@@ -24,17 +24,17 @@ const Cart = ({isAuthenticated}) => {
 
     const deleteItemFromCart = async (id) => {
         try {
-            await cartService.deleteItemFromCart(id).then((res) => console.log(res));
+            await cartService.deleteItemFromCart(id);
         } catch (error) {
             console.log(error);
         }
         window.location.reload();
     }
 
-    const onDecrement = (item) => {
+    const onDecrement = async(item) => {
         if (item.itemsCount === 1) {
             try {
-                cartService.deleteItemFromCart(item.id).then((res) => console.log(res));
+                await cartService.deleteItemFromCart(item.id);
             } catch (error) {
                 console.log(error);
             }
@@ -77,7 +77,7 @@ const Cart = ({isAuthenticated}) => {
                                                 <TableRow className={classes.tablerow} key={item.id}>
 
                                                     <TableCell data-testid="name">
-                                                        <Typography variant='subtitle1' className={classes.name}>
+                                                        <Typography variant='subtitle1' className={classes.name} data-testid="nameText">
                                                             {item.name}
                                                         </Typography>
                                                     </TableCell>
@@ -105,7 +105,7 @@ const Cart = ({isAuthenticated}) => {
                                                             <AddCircle />
                                                         </IconButton>
                                                     </TableCell>
-                                                    <TableCell >
+                                                    <TableCell data-testid="deleteButton">
                                                         <IconButton aria-label="delete" onClick={(e) => deleteItemFromCart(item.id)} data-testid="delete_button">
                                                             <Delete />
                                                         </IconButton>

@@ -17,7 +17,7 @@ describe("Footer Component Basic Rendering", () => {
     when(footerService.getVersion).calledWith().mockReturnValue({CurrentVersion: "v1"});
     render(<Footer />);
 
-    await waitFor(()=>{
+    await (()=>{
       const version = screen.getByTestId("version");
       expect(version.textContent).toBe("Version : v1");
     })

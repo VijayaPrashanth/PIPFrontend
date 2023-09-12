@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, screen,waitFor } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import EditItemDialog from './EditItemDialog';
 import pricelistService from './services/pricelistService';
 import cartService from '../cart/services/cartService';
@@ -37,34 +37,34 @@ describe('EditItemDialog Component', () => {
         expect(screen.getByTestId("done_button")).toBeInTheDocument();
     });
 
-    it('renders with initial values', () => {
+    it('renders with initial values', async() => {
         const handleClose = jest.fn();
         render(<EditItemDialog open={true} handleClose={handleClose} item={mockItem} />);
 
-        expect(screen.getByTestId('productnamefield')).toHaveValue(mockItem.name);
+       await(()=>{ expect(screen.getByTestId('productnamefield')).toHaveValue(mockItem.name);
         expect(screen.getByTestId('pricefield')).toHaveValue(mockItem.price);
-        expect(screen.getByTestId('unitfield')).toHaveValue(mockItem.unit);
+        expect(screen.getByTestId('unitfield')).toHaveValue(mockItem.unit);})
     });
 
-    it("should close dialog on clicking close icon",()=>{
+    it("should close dialog on clicking close icon",async()=>{
         const handleClose = jest.fn();
         render(<EditItemDialog open={true} handleClose={handleClose} item={mockItem} />);
 
-        const closeIcon = screen.getByTestId("close_button");
+        await(()=>{const closeIcon = screen.getByTestId("close_button");
         fireEvent.click(closeIcon);
 
-        expect(handleClose).toHaveBeenCalledTimes(1);
+        expect(handleClose).toHaveBeenCalledTimes(1);})
     })
 
-    it("should call performEdit on clicking done button",()=>{
+    it("should call performEdit on clicking done button",async()=>{
         const performEdit = jest.fn();
         const handleClose = jest.fn();
         render(<EditItemDialog open={true} handleClose={handleClose} item={mockItem} />);
 
-        const doneButton = screen.getByTestId("done_button");
+        await(()=>{const doneButton = screen.getByTestId("done_button");
         fireEvent.click(doneButton);
 
-        expect(performEdit).toHaveBeenCalledTimes(1);
+        expect(performEdit).toHaveBeenCalledTimes(1);})
     })
 
 });

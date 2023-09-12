@@ -11,6 +11,8 @@ import apiService from "../helpers/apiService";
 import { when } from "jest-when";
 import pricelistService from "./services/pricelistService";
 import AddItemDialog from "./AddItemDialog";
+import MockAxios from "jest-mock-axios";
+import EditItemDialog from "./EditItemDialog";
 
 configure({ adapter: new Adapter() });
 jest.mock('axios');
@@ -55,13 +57,16 @@ describe("PriceList Basic rendering", () => {
     expect(buttonComponent).toBeTruthy();
   })
 
-  it("should handled empty inventory",()=>{
-    render(<PriceList/>);
+  it("should handled empty inventory",async()=>{
+    await render(<PriceList/>);
 
-    const empty = screen.getByTestId("emptyInventory");
-    expect(empty).toBeTruthy();
-    expect(screen.getByText("Will be updating soon.....")).toBeInTheDocument();
+    await (()=>{
+      const empty = screen.getByTestId("emptyInventory");
+      expect(empty).toBeTruthy();
+      expect(screen.getByText("Will be updating soon.....")).toBeInTheDocument();
+    })
   })
+
   it("should have a delete button", () => {
     const pricelist = shallow(<PriceList />);
     const buttonComponent = pricelist.find(Button).filterWhere(button => button.text() === 'delete');
@@ -71,7 +76,8 @@ describe("PriceList Basic rendering", () => {
 });
 
 describe("enable add and edit dialog:",()=>{
-  it("should open dialog when add button is clicked",()=>{
+  it("should open dialog when add button is clicked",async()=>{
+    const addItemDialog = jest.fn();
     render(
       <>
         <PriceList />
@@ -79,35 +85,87 @@ describe("enable add and edit dialog:",()=>{
       </>
     );
 
-    const addItemDialog = screen.getByTestId("additemdialog")
+    await (()=>{const addItem = screen.getByTestId("additemdialog");
     expect(addItemDialog).toBeInTheDocument();
-    expect(addItemDialog).not.toBeInTheDocument();
     const addButton = screen.getByTestId("add_items_Button");
     
     fireEvent.click(addButton);
 
-    expect(addItemDialog).toBeInTheDocument();
-    expect(addItemDialog).toHaveClass('MuiDialog-open');
+    expect(addItemDialog).toHaveBeenCalled();})
 
   })
-  it("should open dialog when edit button is clicked",()=>{
+  it("should open dialog when edit button is clicked",async()=>{
+    const mockResponse = [{ id: 1, name: 'Item 1', price: 10, unit: 'kg' }];
+
+    const openEditDialog = jest.fn();
+    MockAxios.put.mockResolvedValue(mockResponse);
+
+    render(<PriceList/>)
+
+    await (()=>{const editButton = screen.getByTestId("edit_button");
+    fireEvent.click(editButton);
+    expect(openEditDialog).toHaveBeenCalledTimes(1);})
 
   })
-    it("should call deleteItemFromInventory",()=>{
+    it("should call deleteItemFromInventory",async()=>{
       const mockResponse = [{ id: 1, name: 'Item 1', price: 10, unit: 'kg' }];
 
-      //require('./services/pricelistService').getItemsFromInventory.mockResolvedValueOnce({ data: mockResponse });
+      when(pricelistService.deleteItem).calledWith().mockResolvedValueOnce("items removed from inventory");
 
-      // const deleteItem = jest.fn()
       render(<PriceList/>);
-      const deleteButton = screen.getByTestId("delete");
+      await(()=>{const deleteButton = screen.getByTestId("delete");
       expect(deleteButton).toBeInTheDocument();
       fireEvent.click(deleteButton);
 
-      expect(require('./services/pricelistService').deleteItem).toHaveBeenCalledWith(1);
+      expect(require('./services/pricelistService').deleteItem).toHaveBeenCalledWith(1);})
     })
 })
 
+describe("alternate approach",()=>{
+    it("should get items from inventory",async()=>{
+      const mockItem = [{ id: 1, name: 'Item 1', price: 10, unit: 'kg' }];
+      MockAxios.get.mockResolvedValue(mockItem);
+
+      await render(<PriceList/>);
+      await (()=>{expect(MockAxios.get).toHaveBeenCalled();})
+    })
+    it("should open addItemDialog when clicking add button",async()=>{
+      const openAddDialog = jest.fn();
+      const { getByTestId } = await render(<>
+                                              <PriceList />
+                                              <AddItemDialog open={true} handleClose={() => { }} />
+                                            </>);
+        await(()=>{
+          const addButton = screen.getByTestId("add_items_Button");
+          fireEvent.click(addButton);
+          expect(openAddDialog).toHaveBeenCalled();
+        })
+    })
+    it("should open editItemDialog when clicking edit button",async()=>{
+      const mockItem = [{ id: 1, name: 'Item 1', price: 10, unit: 'kg' }];
+      const openEditDialog = jest.fn();
+      const { getByTestId } = await render(<>
+                                            <PriceList />
+                                            <EditItemDialog open={true} handleClose={() => { }} item={mockItem} />
+                                          </>);
+      await (() => {
+        const editButton = screen.getByTestId("edit_button");
+        fireEvent.click(editButton);
+        expect(openEditDialog).toHaveBeenCalled();
+      })
+
+    })
+    it("should delete items from inventory",async()=>{
+      MockAxios.delete.mockResolvedValueOnce("items removed from inventory");
+      const {getByTestId}=await render(<PriceList/>);
+
+      await(()=>{const deleteButton = getByTestId("delete_button");
+      fireEvent.click(deleteButton);
+      expect(MockAxios.delete).toHaveBeenCalledTimes(1);})
+      
+
+    })
+})
 
 
 

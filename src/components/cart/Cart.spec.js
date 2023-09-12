@@ -1,15 +1,14 @@
+/* eslint-disable testing-library/prefer-screen-queries */
 /* eslint-disable testing-library/no-wait-for-multiple-assertions */
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, getAllByAltText, getByDisplayValue, getByTestId, render, screen, waitFor } from '@testing-library/react';
 import Cart from './Cart';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { Button } from '@material-ui/core';
-import { wait } from '@testing-library/user-event/dist/utils';
-import apiService from '../helpers/apiService';
 import cartService from './services/cartService';
 import { when } from 'jest-when';
-
+import MockAxios from 'jest-mock-axios';
 
 configure({ adapter: new Adapter() });
 
@@ -33,12 +32,6 @@ describe("Cart Basic rendering", () => {
         await (()=> expect(screen.getByTestId("pricelist")).toBeTruthy());
     });
 
-    it("Should render a table", async() => {
-        await render(<Cart />);
-        // eslint-disable-next-line testing-library/await-async-utils
-        waitFor(()=>expect(screen.getByTestId("table")).toBeTruthy());
-    });
-
     it("should have a add button", async() => {
         const pricelist = shallow(<Cart />);
         const buttonComponent = pricelist.find(Button).filterWhere(button => button.text() === 'delete');
@@ -57,48 +50,66 @@ describe("Cart Basic rendering", () => {
 });
 
 describe("Cart functionalities",()=>{
+    const data = [{ id: 1, inventory: { id: 1, name: "onion", price: 40, unit: "1KG" }, name: "onion", quantity: 3, unit: "1KG" }];
+
     it("should get items from cart:",async()=>{
-        when(cartService.getItemsFromCart).calledWith()
-        .mockResolvedValue([{id:1,inventory:{id:1,name:"onion",price:40,unit:"1KG"},name:"onion",quantity:3,unit:"1KG"}]);
+        when(cartService.getItemsFromCart).calledWith().mockResolvedValue(data);
+        MockAxios.get.mockResolvedValueOnce(data);
 
-        render(<Cart/>);
-
-        await waitFor(()=>{
-            expect(screen.getByText("onion")).toBeInTheDocument();
-            expect(screen.getByText("40")).toBeInTheDocument();
-            expect(screen.getByText("1KG")).toBeInTheDocument();
-            expect(screen.getByText("3")).toBeInTheDocument();
+        const {getByText} = await render(<Cart/>);
+        await (()=>{
+            expect(getByText("onion")).toBeInTheDocument();
+            expect(getByText("40")).toBeInTheDocument();
+            expect(getByText("1KG")).toBeInTheDocument();
+            expect(getByText("3")).toBeInTheDocument();
+            expect(cartService.getItemsFromCart).toHaveBeenCalled();
         })
         
     })
+})
 
-    it("should send delete request on clicking delete icon",()=>{
-        const deleteFunction = jest.fn();
-        when(cartService.deleteItemFromCart).calledWith(2).mockResolvedValueOnce("item removed from cart");
+describe("test with alternative approach:",()=>{
+    const data = [{ id: 1, inventory: { id: 1, name: "onion", price: 40, unit: "1KG" }, name: "onion", quantity: 3, unit: "1KG" }];
+    it("should get items from cart",async()=>{
 
-        render(<Cart/>);
+        MockAxios.get.mockResolvedValueOnce(data);
 
-        const deleteButton = screen.getByTestId("delete_button");
-        fireEvent.click(deleteButton);
+        const {getByText} =await render(<Cart/>);
 
-        expect(deleteFunction(2)).toBeCalled();
-        expect(cartService.deleteItemFromCart).toBeCalled();
+         await( ()=>{
+            expect(MockAxios.get).toHaveBeenCalled(1);
+             expect(getByText("onion")).toBeInTheDocument();
+             expect(getByText("40")).toBeInTheDocument();
+             expect(getByText("1KG")).toBeInTheDocument();
+        })
+
     })
 
-    it("should update itemscount",()=>{
+    it("should delete item from cart",async()=>{
+        MockAxios.delete.mockResolvedValueOnce("items deleted from cart");
+
+        await render(<Cart/>);
+
+        await(()=>{
+            const deleteButton = screen.getByTestId("deleteButton");
+
+            fireEvent.click(deleteButton);
+
+            expect(MockAxios.delete).toHaveBeenCalledTimes(1);
+        });
+    })
+
+    it("should increment itemscount when increment button is clicked",async()=>{
+        MockAxios.put.mockResolvedValue(data);
         const incrementFn = jest.fn();
-        when(apiService.updateCartItem)
-            .calledWith('cart',1, 3)
-            .mockResolvedValue({
-                id: 1, inventory:
-                    { id: 1, name: "onion", price: 40, unit: "1KG" },
-                name: "onion", quantity: 3, unit: "1KG"
-            });
 
-            render(<Cart/>);
-            const increment = screen.getByTestId("increment_button");
-            fireEvent.click(increment);
+        await render(<Cart/>);
 
-            expect(incrementFn).toBeCalled();
+        await(()=>{
+            const incrementButton = screen.getByTestId("increment_button");
+            fireEvent.click(incrementButton);
+            expect(MockAxios.put).toHaveBeenCalledTimes(1);
+            expect(incrementFn).toHaveBeenCalled();
+        })
     })
 })

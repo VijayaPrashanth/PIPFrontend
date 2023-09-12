@@ -5,7 +5,7 @@ import FormikTextField from "../formik/FormikTextField";
 import { formSchema, initialValues } from "./services/loginFormService";
 import styles from "./styles/loginStyles";
 import useLogin from "./hooks/useLogin";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({onLogin,isAuthenticated}) => {
     const classes = styles();

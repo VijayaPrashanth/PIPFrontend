@@ -6,15 +6,8 @@ import { isLoggedIn, logout } from "../helpers/authService";
 const ProtectedRoute = ({ element,isAuthenticated }) => {
 
     if(!isLoggedIn() && !isAuthenticated) {
-        console.log(isLoggedIn);
-        console.log(isAuthenticated);
         logout();
         return <Navigate to="/login" replace/>
-    }
-    else{
-        console.log("on success:");
-        console.log(isLoggedIn());
-        console.log(isAuthenticated);
     }
     return element;
 };
