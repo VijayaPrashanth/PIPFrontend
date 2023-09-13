@@ -4,6 +4,7 @@ import apiService from "../helpers/apiService.js";
 import { useEffect, useState } from "react";
 import { AddCircle, Delete, RemoveCircle, RemoveShoppingCartOutlined } from "@material-ui/icons";
 import cartService from "./services/cartService.js";
+import { isLoggedIn } from "../helpers/authService.js";
 
 const Cart = () => {
     const classes = styles();
@@ -12,8 +13,8 @@ const Cart = () => {
     useEffect(() => {
         async function getItem() {
             try {
-                await cartService.getItemsFromCart()
-                    .then((res) => { setResponse(res.data) })
+                if(isLoggedIn){await cartService.getItemsFromCart()
+                    .then((res) => { setResponse(res.data) })}
             }
             catch (err) {
                 console.log(err.response)
