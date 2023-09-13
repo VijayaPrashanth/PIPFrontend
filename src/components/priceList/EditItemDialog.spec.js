@@ -3,6 +3,7 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import EditItemDialog from './EditItemDialog';
 import pricelistService from './services/pricelistService';
 import cartService from '../cart/services/cartService';
+import MockAxios from 'jest-mock-axios';
 
 jest.mock('./services/pricelistService', () => ({
     updateItemInInventory: jest.fn(() => Promise.resolve({ data: 'success' })),
@@ -61,10 +62,46 @@ describe('EditItemDialog Component', () => {
         const handleClose = jest.fn();
         render(<EditItemDialog open={true} handleClose={handleClose} item={mockItem} />);
 
-        await(()=>{const doneButton = screen.getByTestId("done_button");
-        fireEvent.click(doneButton);
+        await(()=>{
+            const doneButton = screen.getByTestId("done_button");
+            fireEvent.click(doneButton);
 
-        expect(performEdit).toHaveBeenCalledTimes(1);})
+            expect(performEdit).toHaveBeenCalledTimes(1);
+        })
+    })
+
+    it("handles input changes correctly", async() => {
+        const handleClose = jest.fn();
+        render(<EditItemDialog open={true} handleClose={handleClose} item={mockItem} />);
+
+        await(()=>{const nameInput = screen.getByTestId("namefield").querySelector("input");
+        const priceInput = screen.getByTestId("pricefield").querySelector("input");
+        const unitInput = screen.getByTestId("unitfield").querySelector("input");
+
+        fireEvent.change(nameInput, { target: { value: "Test Product" } });
+        fireEvent.change(priceInput, { target: { value: "10.99" } });
+        fireEvent.change(unitInput, { target: { value: "pcs" } });
+
+        expect(nameInput.value).toBe("Test Product");
+        expect(priceInput.value).toBe("10.99");
+        expect(unitInput.value).toBe("pcs");})
+    });
+
+    it("should send edited values",async()=>{
+        const mockData = [{ id: 1, name: 'Item 1', price: 10, unit: 'kg' }];
+        const performEdit = jest.fn();
+        const handleClose = jest.fn();
+        MockAxios.put.mockResolvedValue(mockData);
+        render(<EditItemDialog open={true} handleClose={handleClose} item={mockItem} />);
+
+        await(()=>{
+            const doneButton = screen.getByTestId("done_button");
+            fireEvent.click(doneButton);
+            
+            expect(performEdit).toHaveBeenCalledTimes(1);
+            expect(MockAxios.put).toHaveBeenCalledWith(mockData);
+        })
+
     })
 
 });

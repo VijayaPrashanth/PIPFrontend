@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Badge, Button, Card, Container, Table, TableBody, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
+import { Button, Card, Container, Table, TableBody, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
 import styles from './styles/homeStyles';
 import cartService from '../cart/services/cartService';
 import pricelistService from '../priceList/services/pricelistService';
@@ -9,18 +9,17 @@ const Home = ({isAuthenticated}) => {
     const [responseFromInventory, setResponseFromInventory] = useState([]);
     const [itemsCount, setItemsCount] = useState(0);
     const [cartres, setCartres] = useState([]);
-    const [itemscount,setItemscount] = useState([]);
 
     useEffect(() => {
-        try {
-            pricelistService.getItemsFromInventory().then((res) => setResponseFromInventory(res.data));
-            cartService.getItemsFromCart().then((res)=>setItemscount(res.data));
+       async function initialget(){ try {
+            await pricelistService.getItemsFromInventory().then((res) => setResponseFromInventory(res.data));
         } catch (error) {
             console.log(error);
-        }
-        
+        }}
+        initialget();
     }, []);
 
+    
     const addItem = (inventoryItem, quantityFromInventory) => {
         const payload = {
             id: inventoryItem.id,
@@ -40,7 +39,7 @@ const Home = ({isAuthenticated}) => {
         <>
             <div data-testid="home">
                 <Container className={classes.containerdisplay} align="center" >
-                    <Table style={{ width: "45%" }}>
+                    <Table style={{ width: "40%" }}>
                         <TableBody>
                             <Card color='primary' className={classes.containerentries} >
                                 {
@@ -66,9 +65,9 @@ const Home = ({isAuthenticated}) => {
                                             <TableCell data-testid="itemscount">
                                                 <TextField
                                                     type="number"
-                                                    defaultValue="1"
+                                                    defaultValue="0"
                                                     onChange={(e) => setItemsCount(e.target.value)}
-                                                    inputProps={{ step: "1", min: "1", max: "15" }}
+                                                    inputProps={{ step: "1", min: "0", max: "15" }}
                                                 />
                                             </TableCell>
                                             <TableCell>
@@ -78,8 +77,6 @@ const Home = ({isAuthenticated}) => {
                                                     data-testid="addButton">
                                                     add
                                                 </Button>
-                                            </TableCell>
-                                            <TableCell>
                                             </TableCell>
                                         </TableRow>
                                     ))

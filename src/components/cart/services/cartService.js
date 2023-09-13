@@ -11,7 +11,5 @@ export default {
     deleteItemFromCart: async (id) => {
         return await apiService.delete('cart', id);
     },
-    deleteItemFromCartByInventory: async (id) => {
-        return await apiService.delete('cart/byInventory', id);
-    }
+
 }

@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, FormControl, FormLabel, Table, TableBody, TableCell, TableRow, TextField} from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogContent, FormControl, FormLabel, Table, TableBody, TableCell, TableRow, TextField, Typography} from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import { useState } from "react";
 import styles from "./styles/edititemdialogStyles"
@@ -26,7 +26,7 @@ const EditItemDialog = ({ open, handleClose, item }) => {
         }
         try {
             await pricelistService.updateItemInInventory(item.id, payload).then((res) => setEditresponse(res.data));
-            deleteByInventory();
+            updateByInventory(payload);
         } catch (error) {
             console.log(error);
         }
@@ -34,9 +34,9 @@ const EditItemDialog = ({ open, handleClose, item }) => {
         window.location.reload();
     }
 
-    const deleteByInventory=async()=>{
+    const updateByInventory=async(payload)=>{
         try {
-            await cartService.deleteItemFromCartByInventory(item.id).then((res) => setResponseFromCartForDeletion(res));
+            await cartService.updateCart(payload);
         } catch (error) {
             console.log(error);
         }
@@ -46,6 +46,11 @@ const EditItemDialog = ({ open, handleClose, item }) => {
         <>
             <Dialog open={open} onClose={handleClose} data-testid="editdialog">
                 <div className={classes.titleAndCloseButton}>
+                    <div className={classes.title}>
+                        <Typography variant="h6">
+                            EditItems
+                        </Typography>
+                    </div>
                     <div className={classes.closeButton} data-testid="closeButton">
                         <Close onClick={handleClose} data-testid="close_button" />
                     </div>

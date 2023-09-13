@@ -162,9 +162,73 @@ describe("alternate approach",()=>{
       await(()=>{const deleteButton = getByTestId("delete_button");
       fireEvent.click(deleteButton);
       expect(MockAxios.delete).toHaveBeenCalledTimes(1);})
-      
-
     })
+})
+
+describe("functionality with values",()=>{
+  it("should get items from inventory",async()=>{
+    const mockItem = [{ id: 1, name: 'Item 1', price: 10, unit: 'kg' }];
+    MockAxios.get.mockResolvedValue(mockItem);
+
+    await render(<PriceList />);
+    await (() => { 
+      expect(MockAxios.get).toHaveBeenCalledWith(mockItem); 
+    })
+  })
+
+  it("should add items to inventory",async()=>{
+    const dataBeforeAdd = [{ id: 1, name: 'onion', price: 40, unit: '1kg' },
+                            { id: 2, name: 'tomato', price: 80, unit: '1kg' },
+                            { id: 3, name: 'potato', price: 50, unit: '1kg' }]
+
+    const dataAfterAdd = [{ id: 1, name: 'onion', price: 40, unit: '1kg' },
+    { id: 2, name: 'tomato', price: 80, unit: '1kg' },
+    { id: 3, name: 'potato', price: 50, unit: '1kg' },
+      { id: 4, name: 'peas', price: 100, unit: '1kg' }];
+    MockAxios.get.mockResolvedValueOnce(dataBeforeAdd);
+    MockAxios.get.mockResolvedValueOnce(dataAfterAdd)
+
+    const openAddDialog = jest.fn();
+    const { getByTestId } = await render(<>
+      <PriceList />
+      <AddItemDialog open={true} handleClose={() => { }} />
+    </>);
+    await(() => {
+
+      const addButton = screen.getByTestId("add_items_Button");
+      fireEvent.click(addButton);
+      expect(openAddDialog).toHaveBeenCalled();
+      expect(MockAxios.get).lastCalledWith(dataAfterAdd);
+  })
+})
+
+    it("should edit items in inventory", async () => {
+      const dataBeforeEdit = [{ id: 1, name: 'onion', price: 40, unit: '1kg' },
+      { id: 2, name: 'tomato', price: 80, unit: '1kg' },
+      { id: 3, name: 'potato', price: 50, unit: '1kg' }]
+
+      const dataAfterEdit = [{ id: 1, name: 'onion', price: 40, unit: '1kg' },
+      { id: 2, name: 'Cabbage', price: 45, unit: '1kg' },
+      { id: 3, name: 'potato', price: 50, unit: '1kg' }]
+
+      const item = [{ id: 2, name: 'tomato', price: 80, unit: '1kg' }]
+      MockAxios.get.mockResolvedValueOnce(dataBeforeEdit);
+      MockAxios.get.mockResolvedValueOnce(dataAfterEdit)
+
+      const openEditDialog = jest.fn();
+      const { getByTestId } = await render(<>
+        <PriceList />
+        <EditItemDialog open={true} handleClose={() => { }} item={item} />
+      </>);
+      await (() => {
+
+        const editButton = screen.getByTestId("edit_items_Button");
+        fireEvent.click(editButton);
+        expect(openEditDialog).toHaveBeenCalled();
+        expect(MockAxios.get).lastCalledWith(dataAfterEdit);
+      })
+
+})
 })
 
 

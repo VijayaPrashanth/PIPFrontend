@@ -117,7 +117,7 @@ const Cart = () => {
                             </Table>
                         </Container>
                     ) :
-                        (<div data-testid="empty cart">
+                        ((<div data-testid="empty cart">
                             <Container>
                                 <div className={classes.noitems}>
                                     <Card>
@@ -128,7 +128,7 @@ const Cart = () => {
                                     </Card>
                                 </div>
                             </Container>
-                        </div>
+                        </div>)
                         )
                 }
             </Container>
