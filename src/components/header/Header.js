@@ -3,6 +3,7 @@ import { AppBar, Badge, Toolbar, Typography } from "@material-ui/core";
 import styles from "./styles/headerStyles";
 import { ExitToApp, ShoppingCart } from "@material-ui/icons";
 import cartService from "../cart/services/cartService";
+import { isLoggedIn } from "../helpers/authService";
 
 const Header = ({ onLogout, isAuthenticated }) => {
     const classes = styles();
@@ -13,7 +14,7 @@ const Header = ({ onLogout, isAuthenticated }) => {
 
     useEffect(() => {
         try {
-            if (isAuthenticated) {
+            if (isLoggedIn()) {
                 cartService.getItemsFromCart('cart')
                     .then((res) => { setCartData(res.data) });
             }
